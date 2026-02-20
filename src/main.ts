@@ -1,3 +1,5 @@
+import { isProfane } from 'no-profanity';
+
 export function set_difficulty(new_difficulty:number)
 {
   console.log(`Set Difficulty to ${new_difficulty}`);
@@ -46,14 +48,23 @@ function generate_password()
   results_element.style.color="#9c6500";
   document.getElementById("results_messsage")!.innerHTML="Enter the shown password and then click Login.";
 
-  password="";
-  for(let i=0;i<password_lengths[difficulty];i++)
+  while(true)
   {
-    const index=Math.floor(Math.random()*valid_characters[difficulty].length);
-    const letter=valid_characters[difficulty][index];
-    password+=letter;
-  }
+    password="";
+    for(let i=0;i<password_lengths[difficulty];i++)
+    {
+      const index=Math.floor(Math.random()*valid_characters[difficulty].length);
+      const letter=valid_characters[difficulty][index];
+      password+=letter;
+    }
     document.getElementById("original_password")!.innerHTML=`Password ${password}`;
+    
+    //Repeat password generation is password is profane.
+    if(!isProfane(password))
+    {
+      break;
+    }
+  }
 }
 
 let password_input:HTMLInputElement = document.getElementById("password_input") as HTMLInputElement;
