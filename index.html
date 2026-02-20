@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="src/style.css" type="text/css" rel="stylesheet">
+    <title>Password Game</title>
+  </head>
+  <body>
+    <main>
+    <h1>Password Game</h1>
+    <table class="table table-secondary">
+    <tr>
+    <th>Difficulty</th>
+    <th><button class="btn btn-primary difficulty_button">Easy</th>
+    <th><button class="btn btn-primary difficulty_button">Medium</th>
+    <th><button class="btn btn-primary difficulty_button">Hard</th>
+    <th><button class="btn btn-primary difficulty_button">Government</th>
+    </tr>
+    <tr>
+    <td></td>
+    <td>8 lowercase letters</td>
+    <td>10 lowercase uppercase letters and uppercase letters</td>
+    <td>12 lowercase letters, uppercase letters, numbers and common symbols</td>
+    <td>16 lowercase letters, uppercase letters, numbers and all symbols</td>
+    </tr>
+    </table>
+    <h2 id="original_password"></h2>
+
+    <div class="block">
+    <label for="password_input">Your Entry</label>
+    <input id="password_input" type="password">
+    <button id="toggle_password_visibility_button">Toggle Visibility</button>
+    </div>
+    <button id="attempt_login_button" class="block">Login</button>
+
+    <div id="results">
+    <h2 id="results_messsage"></h2>
+    </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module">
+    import {set_difficulty, toggle_password_visibility, attempt_login} from "/src/main.ts";
+    let difficulty_buttons=document.getElementsByClassName("difficulty_button");
+
+    for(let i=0;i<difficulty_buttons.length;i++)
+    {
+      difficulty_buttons[i].onclick=()=>{set_difficulty(i)};
+    }
+
+    document.getElementById("toggle_password_visibility_button").onclick=()=>{toggle_password_visibility()};
+    document.getElementById("attempt_login_button").onclick=()=>{attempt_login()};
+    </script>
+  </body>
+</html>
