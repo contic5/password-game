@@ -641,8 +641,6 @@ creative
 creature
 credit
 crew
-crime
-criminal
 crisis
 criteria
 critic
@@ -678,11 +676,9 @@ data
 date
 daughter
 day
-dead
 deal
 dealer
 dear
-death
 debate
 debt
 decade
@@ -1699,7 +1695,6 @@ Mrs
 Ms
 much
 multiple
-murder
 muscle
 museum
 music
@@ -1712,7 +1707,6 @@ my
 myself
 mystery
 myth
-naked
 name
 narrative
 narrow
@@ -2581,7 +2575,6 @@ sufficient
 sugar
 suggest
 suggestion
-suicide
 suit
 summer
 summit
