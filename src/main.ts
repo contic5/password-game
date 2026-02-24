@@ -1,4 +1,5 @@
 import { isProfane } from 'no-profanity';
+import { get_words } from './load_words';
 
 //Changes difficulty changes password length and possible password letters
 export function set_difficulty(new_difficulty:number)
@@ -16,11 +17,13 @@ export function toggle_password_visibility()
   {
     console.log("Password is now hidden");
     password_input.type="password";
+    document.getElementById("toggle_password_visibility_button")!.textContent="Show Password";
   }
   else
   {
     console.log("Password is now visible");
     password_input.type="text";
+    document.getElementById("toggle_password_visibility_button")!.textContent="Hide Password";
   }
 }
 export function attempt_login()
@@ -53,15 +56,48 @@ export function attempt_login()
     document.getElementById("results_messsage")!.innerHTML="Your Passowrd is Incorrect. Try Again.";
   }
 }
-export function generate_password()
+function to_title_case(string:string) {
+  if (string.length === 0) {
+    return ""; // Handle empty strings
+  }
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+function generate_random_passphrase()
 {
-  password_input.disabled=false;
-  console.log("Generate Password");
-  results_element.style.backgroundColor="#ffeb9c";
-  results_element.style.color="#9c6500";
-  document.getElementById("results_messsage")!.innerHTML="Enter the shown password and then click Login.";
+  while(true)
+  {
+    password="";
+    for(let i=0;i<3;i++)
+    {
+      const index=Math.floor(Math.random()*words.length);
+      password+=to_title_case(words[index]);
+    }
+
+    //Repeat password generation is password is profane.
+    if(!isProfane(password))
+    {
+      break;
+    }
+  }
+
+  /*
+Common substitutions are from https://wmich.edu/arts-sciences/technology-password-tips
+  */
+  password=password.replace("s","$");
+  password=password.replace("i","!");
+  password=password.replace("a","@");
+  password=password.replace("7","t");
+  password=password.replace("e","3");
+  password=password.replace("g","6");
+  password=password.replace("o","0");
+  password=password.replace("b","8");
 
 
+  document.getElementById("original_password")!.innerHTML=`Password ${password}`;
+}
+function generate_random_password()
+{
+  password_input.value="";
   while(true)
   {
     password="";
@@ -71,13 +107,30 @@ export function generate_password()
       const letter=valid_characters[difficulty][index];
       password+=letter;
     }
-    document.getElementById("original_password")!.innerHTML=`Password ${password}`;
     
     //Repeat password generation is password is profane.
     if(!isProfane(password))
     {
       break;
     }
+  }
+
+  document.getElementById("original_password")!.innerHTML=`Password ${password}`;
+}
+export function generate_password()
+{
+  password_input.disabled=false;
+  results_element.style.backgroundColor="#ffeb9c";
+  results_element.style.color="#9c6500";
+  document.getElementById("results_messsage")!.innerHTML="Enter the shown password and then click Login.";
+
+  if(difficulty<4)
+  {
+    generate_random_password();
+  }
+  else
+  {
+    generate_random_passphrase();
   }
 }
 
@@ -95,6 +148,11 @@ password_input.addEventListener("keydown",function(event){
     password_input.type="password";
   }
 })
+async function setup()
+{
+  words=await get_words(5,10);
+  console.log(words);
+}
 
 let results_element=document.getElementById("results") as HTMLDivElement;
 results_element.style.backgroundColor="#ffeb9c";
@@ -104,5 +162,8 @@ let password="";
 let difficulty=0;
 let valid_characters=["abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@!_$#","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_-+={[}]|:;'<,>/"];
 let password_lengths=[8,10,12,16];
+
+let words:string[]=[];
+setup();
 generate_password();
 
