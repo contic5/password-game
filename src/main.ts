@@ -124,7 +124,7 @@ export function generate_password()
   results_element.style.color="#9c6500";
   document.getElementById("results_messsage")!.innerHTML="Enter the shown password and then click Login.";
 
-  if(difficulty<4)
+  if(difficulty<password_lengths.length)
   {
     generate_random_password();
   }
@@ -160,8 +160,8 @@ results_element.style.color="#9c6500";
 
 let password="";
 let difficulty=0;
-let valid_characters=["abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@!_$#","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_-+={[}]|:;'<,>/"];
-let password_lengths=[8,10,12,16];
+let valid_characters=["1234567890","abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@!_$#","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_-+={[}]|:;'<,>/"];
+let password_lengths=[4,8,10,12,16];
 
 let words:string[]=[];
 setup();

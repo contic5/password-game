@@ -14,6 +14,7 @@
     <table class="table table-secondary">
     <tr>
     <th>Difficulty</th>
+      <th><button class="btn btn-primary difficulty_button">Tutorial</th>
     <th><button class="btn btn-primary difficulty_button">Easy</th>
     <th><button class="btn btn-primary difficulty_button">Medium</th>
     <th><button class="btn btn-primary difficulty_button">Hard</th>
@@ -22,6 +23,7 @@
     </tr>
     <tr>
     <td></td>
+    <td>4 digits</td>
     <td>8 lowercase letters</td>
     <td>10 lowercase uppercase letters and uppercase letters</td>
     <td>12 lowercase letters, uppercase letters, numbers and common symbols</td>
@@ -42,7 +44,7 @@
     <div id="results">
     <h2 id="results_messsage"></h2>
     </div>
-    <p>According to CISA, Government passwords should be at least 16 characters and with a variety of symbols.</p>
+    <p>According to the United States Cybersecurity and Infrastructure Security Agency (CISA), Government passwords should be at least 16 characters and with a variety of symbols.</p>
 
     <h2>Works Cited</h2>
     <ul>
@@ -58,7 +60,7 @@
     <script type="module">
     import {set_difficulty, generate_password, toggle_password_visibility, attempt_login} from "/src/main.ts";
     let difficulty_buttons=document.getElementsByClassName("difficulty_button");
-    let background_colors=["hsl(210, 90%, 60%)","hsl(120, 90%, 60%)","hsl(0, 90%, 60%)","hsl(300, 70%, 30%)","hsl(0,0%,0%)"];
+    let background_colors=["hsl(240, 90%, 50%)","hsl(120, 90%, 50%)","hsl(30, 90%, 50%)","hsl(0, 90%, 50%)","hsl(300, 70%, 30%)","hsl(0,0%,0%)"];
     
     for(let i=0;i<difficulty_buttons.length;i++)
     {
