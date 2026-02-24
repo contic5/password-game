@@ -1,11 +1,14 @@
 import { isProfane } from 'no-profanity';
 
+//Changes difficulty changes password length and possible password letters
 export function set_difficulty(new_difficulty:number)
 {
   console.log(`Set Difficulty to ${new_difficulty}`);
   difficulty=new_difficulty;
   generate_password();
 }
+
+//Toggles password visibility when you click on a button
 export function toggle_password_visibility()
 {
   console.log("Toggling password visibility");
@@ -28,25 +31,36 @@ export function attempt_login()
   //Success
   if(entered_password==password)
   {
-    results_element.style.backgroundColor="#006100";
-    results_element.style.color="#9c0006";
-    alert("You logged in successfully.");
-    document.getElementById("results_messsage")!.innerHTML="You Logged In!";
+    const audio = new Audio("sounds/dragon-studio-correct-472358.mp3");
+    audio.play();
+
+    results_element.style.backgroundColor="#c6efce";
+    results_element.style.color="#006100";
+    document.getElementById("results_messsage")!.innerHTML="You Logged In!<br>Generating New Password";
+
+    password_input.disabled=true;
+    setTimeout(generate_password,3000);
   }
   //Incorrect
   else
   {
+
+    const audio = new Audio("sounds/freesound_community-wrong-buzzer-6268.mp3");
+    audio.play();
+
     results_element.style.backgroundColor="#ffc7ce";
     results_element.style.color="#9c0006";
-    alert("The password you entered was incorrect.");
     document.getElementById("results_messsage")!.innerHTML="Your Passowrd is Incorrect. Try Again.";
   }
 }
-function generate_password()
+export function generate_password()
 {
+  password_input.disabled=false;
+  console.log("Generate Password");
   results_element.style.backgroundColor="#ffeb9c";
   results_element.style.color="#9c6500";
   document.getElementById("results_messsage")!.innerHTML="Enter the shown password and then click Login.";
+
 
   while(true)
   {
