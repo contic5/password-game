@@ -1,6 +1,7 @@
-
+//Only return words that are between min_length and max_length letters long.
 export async function get_words(min_length:number,max_length:number)
 {
+    //Make sure all words are loaded;
     if(!words||words.length==0)
     {
         await load_words();
@@ -11,6 +12,7 @@ export async function get_words(min_length:number,max_length:number)
     return filtered_words;
 }
 
+//Load words from common_english_words.txt
 async function load_words()
 {
     let response=await fetch('common_english_words.txt');

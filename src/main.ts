@@ -13,12 +13,14 @@ export function set_difficulty(new_difficulty:number)
 export function toggle_password_visibility()
 {
   console.log("Toggling password visibility");
+  //Make password go from visible to hidden
   if(password_input.type=="text")
   {
     console.log("Password is now hidden");
     password_input.type="password";
     document.getElementById("toggle_password_visibility_button")!.textContent="Show Password";
   }
+  //Make password go from hidden to visible
   else
   {
     console.log("Password is now visible");
@@ -31,7 +33,7 @@ export function attempt_login()
 
   let entered_password=password_input.value;
 
-  //Success
+  //Success. Show results and play sound.
   if(entered_password==password)
   {
     const audio = new Audio("sounds/dragon-studio-correct-472358.mp3");
@@ -44,7 +46,7 @@ export function attempt_login()
     password_input.disabled=true;
     setTimeout(generate_password,3000);
   }
-  //Incorrect
+  //Incorrect. Show results and play sound.
   else
   {
 
@@ -53,7 +55,7 @@ export function attempt_login()
 
     results_element.style.backgroundColor="#ffc7ce";
     results_element.style.color="#9c0006";
-    document.getElementById("results_messsage")!.innerHTML="Your Passowrd is Incorrect. Try Again.";
+    document.getElementById("results_messsage")!.innerHTML="Your Password is Incorrect. Try Again.";
   }
 }
 function to_title_case(string:string) {
@@ -67,6 +69,7 @@ function generate_random_passphrase()
   while(true)
   {
     password="";
+    //Add three words to the password.
     for(let i=0;i<3;i++)
     {
       const index=Math.floor(Math.random()*words.length);
@@ -81,6 +84,7 @@ function generate_random_passphrase()
   }
 
   /*
+  Perform common letter symbol substitutions.
 Common substitutions are from https://wmich.edu/arts-sciences/technology-password-tips
   */
   password=password.replace("s","$");
@@ -95,19 +99,36 @@ Common substitutions are from https://wmich.edu/arts-sciences/technology-passwor
 
   document.getElementById("original_password")!.innerHTML=`Password ${password}`;
 }
+function fisherYatesShuffle(my_string:string) 
+{
+    let arr:string[]=my_string.split("");
+  	for (let i = arr.length - 1; i > 0; i--) {
+    	const j = Math.floor(Math.random() * (i + 1));
+    	[arr[i], arr[j]] = [arr[j], arr[i]];
+  	}
+  	return arr.join("");
+}
 function generate_random_password()
 {
   password_input.value="";
   while(true)
   {
     password="";
-    for(let i=0;i<password_lengths[difficulty];i++)
+    const counts = difficulty_character_counts[difficulty];
+    //Generate each type of letter (lowercase, uppercase, number, common symbol, rare symbol)
+    for(let key in counts)
     {
-      const index=Math.floor(Math.random()*valid_characters[difficulty].length);
-      const letter=valid_characters[difficulty][index];
-      password+=letter;
+      const character_count_key=key as keyof CharacterCount;
+      const letter_count = counts[character_count_key] ?? 0;
+      const letters=character_groups[character_count_key];
+      for(let i=0;i<letter_count;i++)
+      {
+        let index=Math.floor(Math.random()*letters.length);
+        password+=letters[index];
+      }
     }
-    
+
+    password=fisherYatesShuffle(password);
     //Repeat password generation is password is profane.
     if(!isProfane(password))
     {
@@ -119,6 +140,7 @@ function generate_random_password()
 }
 export function generate_password()
 {
+  //Let user try to enter password
   password_input.disabled=false;
   results_element.style.backgroundColor="#ffeb9c";
   results_element.style.color="#9c6500";
@@ -134,6 +156,14 @@ export function generate_password()
   }
 }
 
+async function setup()
+{
+  //Passphrasw words should be 5 to 10 letters long
+  words=await get_words(5,10);
+  console.log(words);
+}
+
+//Prevent copy and past
 let password_input:HTMLInputElement = document.getElementById("password_input") as HTMLInputElement;
 password_input.addEventListener("paste", function(event) 
 {
@@ -146,21 +176,47 @@ password_input.addEventListener("keydown",function(event){
   if(password_input.type=="text")
   {
     password_input.type="password";
+    document.getElementById("toggle_password_visibility_button")!.textContent="Show Password";
   }
 })
-async function setup()
-{
-  words=await get_words(5,10);
-  console.log(words);
-}
 
 let results_element=document.getElementById("results") as HTMLDivElement;
 results_element.style.backgroundColor="#ffeb9c";
 results_element.style.color="#9c6500";
 
+
 let password="";
 let difficulty=0;
-let valid_characters=["1234567890","abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@!_$#","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_-+={[}]|:;'<,>/"];
+
+//Definition for each character type.
+let character_groups:{ [key: string]: string }={
+  "numbers":"1234567890",
+  "lowercase_letters":"abcdefghijklmnopqrstuvwxyz",
+  "uppercase_letters":"ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "common_symbols":"@?!_$#",
+  "rare_symbols":"~&*()_-+={[}]|:;'<,>/"
+}
+
+//Different types of characters
+type CharacterCount = {
+  numbers?: number;
+  lowercase_letters?: number;
+  uppercase_letters?: number;
+  common_symbols?: number;
+  rare_symbols?: number;
+};
+
+//Array of dictionaries where each dictionary contains the types of characters for that difficulty level.
+let difficulty_character_counts:CharacterCount[]=
+[
+  {"numbers":4},
+  {"lowercase_letters":8},
+  {"lowercase_letters":8,"uppercase_letters":2},
+  {"lowercase_letters":6,"uppercase_letters":2,"numbers":2,"common_symbols":2},
+  {"lowercase_letters":4,"uppercase_letters":4,"numbers":2,"common_symbols":3,"rare_symbols":3},
+]
+
+//Password lengths for each difficulty
 let password_lengths=[4,8,10,12,16];
 
 let words:string[]=[];

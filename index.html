@@ -45,7 +45,7 @@
     <h2 id="results_messsage"></h2>
     </div>
     <p>According to the United States Cybersecurity and Infrastructure Security Agency (CISA), Government passwords should be at least 16 characters and with a variety of symbols.</p>
-
+    <p>The passphrase uses 3000 of the most common English words. A few words have been removed.</p>
     <h2>Works Cited</h2>
     <ul>
     <li><a href="https://www.cisa.gov/audiences/state-local-tribal-and-territorial-government/secure-us-sltt/require-strong-passwords-government">https://www.cisa.gov/audiences/state-local-tribal-and-territorial-government/secure-us-sltt/require-strong-passwords-government</a></li>
@@ -59,17 +59,29 @@
     <script type="module" src="/src/main.ts"></script>
     <script type="module">
     import {set_difficulty, generate_password, toggle_password_visibility, attempt_login} from "/src/main.ts";
+    //Get all difficulty buttons
     let difficulty_buttons=document.getElementsByClassName("difficulty_button");
-    let background_colors=["hsl(240, 90%, 50%)","hsl(120, 90%, 50%)","hsl(30, 90%, 50%)","hsl(0, 90%, 50%)","hsl(300, 70%, 30%)","hsl(0,0%,0%)"];
+
+    //Background colors for each difficulty button.
+    let background_colors=["hsl(240, 90%, 60%)","hsl(120, 90%, 60%)","hsl(60, 90%, 60%)","hsl(30, 90%, 60%)","hsl(0, 90%, 60%)","hsl(300, 90%, 30%)"];
     
     for(let i=0;i<difficulty_buttons.length;i++)
     {
+      //Add setters to difficulty buttons
       difficulty_buttons[i].onclick=()=>{set_difficulty(i)};
       difficulty_buttons[i].style.backgroundColor=background_colors[i];
+
+      //Use black text color for green and yellow backgrounds.
+      if(i>=1&&i<=2)
+      {
+        difficulty_buttons[i].style.color="#000000";
+      }
     }
 
     document.getElementById("toggle_password_visibility_button").onclick=()=>{toggle_password_visibility()};
     document.getElementById("attempt_login_button").onclick=()=>{attempt_login()};
+
+    //Generate new password when user clicks reset button.
     document.getElementById("reset_button").onclick=()=>{generate_password()};
     </script>
   </body>
