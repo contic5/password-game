@@ -25,11 +25,12 @@ async function setup()
 {
     let response=await fetch('common_english_words.txt');
     let data=await response.text();
-    words=data.split("\r\n");
+    words=data.split(/\s+/);
+
 
     let response_2=await fetch('extremely_long_words.txt');
     let data_2=await response_2.text();
-    extremely_long_words=data_2.split("\r\n");
+    extremely_long_words=data_2.split(/\s+/);
 }
 let extremely_long_words:string[]=[];
 let words:string[]=[];
