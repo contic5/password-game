@@ -6,6 +6,8 @@ export function set_difficulty(new_difficulty:number)
 {
   console.log(`Set Difficulty to ${new_difficulty}`);
   difficulty=new_difficulty;
+  correct_answers=0;
+  wrong_answers=0;
   generate_password();
 }
 
@@ -41,9 +43,30 @@ export function attempt_login()
 
     results_element.style.backgroundColor="#c6efce";
     results_element.style.color="#006100";
-    document.getElementById("results_messsage")!.innerHTML="You Logged In!<br>Generating New Password";
+    correct_answers+=1;
+    wrong_answers=0;
+
+    if(correct_answers>=3)
+    {
+      if(difficulty<password_lengths.length+1)
+      {
+        document.getElementById("results_messsage")!.innerHTML="You Logged In!<br>Increasing Level!<br>Generating New Password";
+        correct_answers=0;
+        difficulty+=1;
+      }
+      else
+      {
+        document.getElementById("results_messsage")!.innerHTML="You Logged In!<br>You've completed the game!<br>Generating New Password";
+      }
+    }
+    else
+    {
+      document.getElementById("results_messsage")!.innerHTML="You Logged In!<br>Generating New Password";
+    }
 
     password_input.disabled=true;
+    reset_button.disabled=true;
+    login_button.disabled=true;
     setTimeout(generate_password,3000);
   }
   //Incorrect. Show results and play sound.
@@ -55,7 +78,32 @@ export function attempt_login()
 
     results_element.style.backgroundColor="#ffc7ce";
     results_element.style.color="#9c0006";
-    document.getElementById("results_messsage")!.innerHTML="Your Password is Incorrect. Try Again.";
+
+    wrong_answers+=1;
+    if(wrong_answers>=3)
+    {
+      wrong_answers=0;
+      correct_answers=0;
+      if(difficulty>0)
+      {
+        
+        document.getElementById("results_messsage")!.innerHTML="Your Password is Incorrect.<br>Lowering Difficulty.<br>Try Again.";
+        difficulty-=1;
+
+        password_input.disabled=true;
+        reset_button.disabled=true;
+        login_button.disabled=true;
+        setTimeout(generate_password,3000);
+      }
+      else
+      {
+        document.getElementById("results_messsage")!.innerHTML="Your Password is Incorrect.<br>Asking for help is ok.<br>Try Again.";
+      }
+    }
+    else
+    {
+        document.getElementById("results_messsage")!.innerHTML="Your Password is Incorrect.<br>Try Again.";
+    }
   }
 }
 function to_title_case(string:string) {
@@ -138,7 +186,7 @@ function generate_random_password()
 
   document.getElementById("original_password")!.innerHTML=`Password ${password}`;
 }
-export async function use_random_long_word()
+export async function use_random_extremely_long_word()
 {
   let extremely_long_words=await get_extremely_long_words();
   let index=Math.floor(Math.random()*extremely_long_words.length);
@@ -150,9 +198,12 @@ export function generate_password()
   //Let user try to enter password
   password_input.value="";
   password_input.disabled=false;
+  reset_button.disabled=false;
+  login_button.disabled=false;
   results_element.style.backgroundColor="#ffeb9c";
   results_element.style.color="#9c6500";
   document.getElementById("results_messsage")!.innerHTML="Enter the shown password and then click Login.";
+  document.getElementById("difficulty")!.innerHTML=difficulties[difficulty]+" Difficulty";
 
   if(difficulty<password_lengths.length)
   {
@@ -162,9 +213,10 @@ export function generate_password()
   {
     generate_random_passphrase();
   }
+  //Joke difficulty that uses an extremely long word.
   else
   {
-    use_random_long_word();
+    use_random_extremely_long_word();
   }
 }
 
@@ -199,6 +251,7 @@ results_element.style.color="#9c6500";
 
 let password="";
 let difficulty=0;
+let difficulties=["Tutorial","Easy","Medium","Hard","Government","PassPhrase","Ludicrous"];
 
 //Definition for each character type.
 let character_groups:{ [key: string]: string }={
@@ -231,7 +284,12 @@ let difficulty_character_counts:CharacterCount[]=
 //Password lengths for each difficulty
 let password_lengths=[4,8,10,12,16];
 
+let correct_answers=0;
+let wrong_answers=0;
+
+let reset_button=document.getElementById("reset_button") as HTMLButtonElement;
+let login_button=document.getElementById("attempt_login_button") as HTMLButtonElement;
+
 let words:string[]=[];
 setup();
 generate_password();
-
