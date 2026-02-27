@@ -1,5 +1,5 @@
 import { isProfane } from 'no-profanity';
-import { get_words } from './load_words';
+import { get_extremely_long_words, get_words } from './load_words';
 
 //Changes difficulty changes password length and possible password letters
 export function set_difficulty(new_difficulty:number)
@@ -138,9 +138,17 @@ function generate_random_password()
 
   document.getElementById("original_password")!.innerHTML=`Password ${password}`;
 }
+export async function use_random_long_word()
+{
+  let extremely_long_words=await get_extremely_long_words();
+  let index=Math.floor(Math.random()*extremely_long_words.length);
+  password=extremely_long_words[index];
+  document.getElementById("original_password")!.innerHTML=`Password ${password}`;
+}
 export function generate_password()
 {
   //Let user try to enter password
+  password_input.value="";
   password_input.disabled=false;
   results_element.style.backgroundColor="#ffeb9c";
   results_element.style.color="#9c6500";
@@ -150,9 +158,13 @@ export function generate_password()
   {
     generate_random_password();
   }
-  else
+  else if(difficulty==password_lengths.length)
   {
     generate_random_passphrase();
+  }
+  else
+  {
+    use_random_long_word();
   }
 }
 
@@ -194,7 +206,7 @@ let character_groups:{ [key: string]: string }={
   "lowercase_letters":"abcdefghijklmnopqrstuvwxyz",
   "uppercase_letters":"ABCDEFGHIJKLMNOPQRSTUVWXYZ",
   "common_symbols":"@?!_$#",
-  "rare_symbols":"~&*()_-+={[}]|:;'<,>/"
+  "rare_symbols":"~&*()_-+*={[}]|:;'<,>/"
 }
 
 //Different types of characters

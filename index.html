@@ -11,24 +11,25 @@
   <body>
     <main>
     <h1>Password Game</h1>
+    <h2>Difficulties</h2>
     <table class="table table-secondary">
     <tr>
-    <th>Difficulty</th>
-      <th><button class="btn btn-primary difficulty_button">Tutorial</th>
-    <th><button class="btn btn-primary difficulty_button">Easy</th>
-    <th><button class="btn btn-primary difficulty_button">Medium</th>
-    <th><button class="btn btn-primary difficulty_button">Hard</th>
-    <th><button class="btn btn-primary difficulty_button">Government</th>
-    <th><button class="btn btn-primary difficulty_button">PassPhrase</th>
+    <th><button class="btn btn-primary difficulty_button">Tutorial</button></th>
+    <th><button class="btn btn-primary difficulty_button">Easy</button></th>
+    <th><button class="btn btn-primary difficulty_button">Medium</button></th>
+    <th><button class="btn btn-primary difficulty_button">Hard</button></th>
+    <th><button class="btn btn-primary difficulty_button">Government</button></th>
+    <th><button class="btn btn-primary difficulty_button">PassPhrase</button></th>
+    <th><button class="btn btn-primary difficulty_button">Ludicrous</button></th>
     </tr>
     <tr>
-    <td></td>
     <td>4 digits</td>
     <td>8 lowercase letters</td>
     <td>10 lowercase uppercase letters and uppercase letters</td>
     <td>12 lowercase letters, uppercase letters, numbers and common symbols</td>
     <td>16 lowercase letters, uppercase letters, numbers and all symbols</td>
     <td>3 Full Words with common substitutions</td>
+    <td>The longest English Words</td>
     </tr>
     </table>
     <h2 id="original_password"></h2>
@@ -63,7 +64,7 @@
     let difficulty_buttons=document.getElementsByClassName("difficulty_button");
 
     //Background colors for each difficulty button.
-    let background_colors=["hsl(240, 90%, 60%)","hsl(120, 90%, 60%)","hsl(60, 90%, 60%)","hsl(30, 90%, 60%)","hsl(0, 90%, 60%)","hsl(300, 90%, 30%)"];
+    let background_colors=["hsl(240, 90%, 60%)","hsl(120, 90%, 60%)","hsl(60, 90%, 60%)","hsl(30, 90%, 60%)","hsl(0, 90%, 60%)","hsl(300, 90%, 30%)","hsl(0,0%,0%)"];
     
     for(let i=0;i<difficulty_buttons.length;i++)
     {
