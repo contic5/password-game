@@ -146,6 +146,8 @@ Common substitutions are from https://wmich.edu/arts-sciences/technology-passwor
 
 
   document.getElementById("original_password")!.innerHTML=`Password ${password}`;
+  console.log(Math.max(16,password.length));
+  password_input.size=Math.max(16,password.length);
 }
 function fisherYatesShuffle(my_string:string) 
 {
@@ -155,6 +157,19 @@ function fisherYatesShuffle(my_string:string)
     	[arr[i], arr[j]] = [arr[j], arr[i]];
   	}
   	return arr.join("");
+}
+function random_capital_and_lower(password:string)
+{
+  let letters=password.split("");
+  for(let i=0;i<letters.length;i++)
+  {
+    const roll=Math.floor(Math.random()*100);
+    if(roll>=50)
+    {
+      letters[i]=letters[i].toUpperCase();
+    }
+  }
+  return letters.join("");
 }
 function generate_random_password()
 {
@@ -191,7 +206,11 @@ export async function use_random_extremely_long_word()
   let extremely_long_words=await get_extremely_long_words();
   let index=Math.floor(Math.random()*extremely_long_words.length);
   password=extremely_long_words[index];
+  password=random_capital_and_lower(password);
   document.getElementById("original_password")!.innerHTML=`Password ${password}`;
+
+  console.log(Math.max(16,password.length));
+  password_input.size=Math.max(16,password.length);
 }
 export function generate_password()
 {

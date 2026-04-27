@@ -29,3 +29,7 @@ body
 {
   font-size: 48px;
 }
+#original_password,#password_input
+{
+  font-family: "IBM Plex Serif", serif;
+}
